@@ -5,29 +5,86 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
+	<h:outputStylesheet library="css" name="estilo.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Hello World</title>
+	<title>Tasks</title>
+
 </h:head>
 <h:body>
 
-	<p:dataTable var="car" value="#{dtBasicView.cars}">
-		<p:column headerText="Id">
-			<h:outputText value="#{car.id}" />
-		</p:column>
 
-		<p:column headerText="Year">
-			<h:outputText value="#{car.year}" />
-		</p:column>
+	<f:view id="bodyTarefa">
+		<div id="addTarefa">
+		<h1>Lista Tarefas</h1>
+			<h:form id="formNovaTarefa">
+				<p:growl id="growl" life="2000" />
+				<f:subview id="subviewNovaTarefa">
 
-		<p:column headerText="Brand">
-			<h:outputText value="#{car.brand}" />
-		</p:column>
+					<h:inputHidden value="#{tarefaController.tarefa.idTarefa}"
+						id="idTarefa" />
 
-		<p:column headerText="Color">
-			<h:outputText value="#{car.color}" />
-		</p:column>
-	</p:dataTable>
+					<h3>Titulo</h3>
+					<span class="ui-float-label"> <p:inputText id="titulo"
+							value="#{tarefaController.tarefa.titulo}" /> <p:outputLabel
+							for="@previous" value="Titulo" />
+					</span>
+					<h3>Descrição</h3>
+					<span class="ui-float-label"> <p:inputText id="descricao"
+							value="#{tarefaController.tarefa.descricao}" /> <p:outputLabel
+							for="@previous" value="Descrição" />
+					</span>
+					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
+						<p:outputLabel for="status" value="Status:" />
+						<p:selectOneRadio id="status" value="#{tarefaController.tarefa.status}"
+							unselectable="true">
+							<f:selectItem itemLabel="Não inicializada" itemValue="NAO_INICIADO" />
+							<f:selectItem itemLabel="Em andamento" itemValue="INICIADO" />
+							<f:selectItem itemLabel="Finalizada" itemValue="FINALIZADO" />
+						</p:selectOneRadio>
+					</h:panelGrid>
+				</f:subview>
+				<br></br>
+				<br></br>
 
+				<p:commandButton value="Cadastrar" id="cadastrar"
+					update="growl formNovaTarefa tableBody"
+					action="#{tarefaController.buttonSalvar}"
+					style="margin-right:20px;" styleClass="ui-priority-primary" />
+
+			</h:form>
+
+			<br></br> <br></br>
+
+			<div id="tableTarefas">
+				<p:dataTable id="tableBody" var="tarefa"
+					value="#{tarefaController.tarefas}">
+					<p:column headerText="Ação">
+						<p:commandButton value="Excluir"
+							action="#{tarefaController.buttonExcluir(tarefa)}"
+							update="tableBody" style="margin-right:20px;"
+							styleClass="ui-priority-primary" />
+						<p:commandButton value="Atualizar"
+							action="#{tarefaController.buttonAtualizar(tarefa)}"
+							update="formNovaTarefa" style="margin-right:20px;"
+							styleClass="ui-priority-primary" />
+					</p:column>
+					<p:column headerText="status">
+						<h:outputText value="#{tarefaController.valorStatus(tarefa.status)}" />
+					</p:column>
+					
+					<p:column headerText="Titulo">
+						<h:outputText value="#{tarefa.titulo}" />
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<h:outputText value="#{tarefa.descricao}" />
+					</p:column>
+				</p:dataTable>
+
+			</div>
+
+		</div>
+	</f:view>
 
 
 </h:body>
