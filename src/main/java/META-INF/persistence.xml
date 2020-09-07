@@ -11,7 +11,7 @@
  
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="postgres://aflmtrncvhtscl:92c21b33be9e335ff03e02c92160a93e37921cb03d781f306d4dd3a5af29d031@ec2-52-72-34-184.compute-1.amazonaws.com:5432/d5c4fueo3ticcb" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://ec2-52-72-34-184.compute-1.amazonaws.com:5432/d5c4fueo3ticcb" />
             <property name="javax.persistence.jdbc.user" value="aflmtrncvhtscl" />
             <property name="javax.persistence.jdbc.password" value="92c21b33be9e335ff03e02c92160a93e37921cb03d781f306d4dd3a5af29d031" />
  
