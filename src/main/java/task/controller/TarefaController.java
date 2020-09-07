@@ -1,8 +1,6 @@
 package task.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -10,6 +8,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.PrimeFaces;
+import org.primefaces.context.PrimeFacesContext;
 
 import task.model.Status;
 import task.model.Tarefa;
@@ -58,17 +59,18 @@ public class TarefaController {
 	}
 
 	public void buttonSalvar() {
-		String msg = tarefa.getTitulo() + " Salvo com sucesso!";
-		addMessage(msg);
+		if (validar()) {
+			if (this.tarefa.getIdTarefa() != null) {
+				this.tarefaService.atualizar(tarefa);
+			} else {
+				this.tarefaService.salvar(tarefa);
+			}
+			String msg = tarefa.getTitulo() + " Salvo com sucesso!";
+			addMessage(msg);
 
-		if (this.tarefa.getIdTarefa() != null) {
-			this.tarefaService.atualizar(tarefa);
-		} else {
-			this.tarefaService.salvar(tarefa);
+			this.tarefas = this.tarefaService.listar();
+			this.limparCampos();
 		}
-
-		this.tarefas = this.tarefaService.listar();
-		this.limparCampos();
 	}
 
 	public void limparCampos() {
@@ -84,6 +86,10 @@ public class TarefaController {
 		this.tarefa = tarefa;
 	}
 
+	public void teste() {
+		System.out.println("ssss");
+	}
+
 	public String valorStatus(Status status) {
 		String valor = " ";
 
@@ -97,4 +103,21 @@ public class TarefaController {
 		return valor;
 
 	}
+
+	private boolean validar() {
+		// Tive problemas com required, fiz a validação manualmente
+
+		boolean todosCamposValido = true;
+
+		if (this.tarefa.getTitulo() == null || this.tarefa.getTitulo() == "" || this.tarefa.getDescricao() == null
+				|| this.tarefa.getDescricao() == "" || this.tarefa.getStatus() == null) {
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Por favor preencha os campos obrigatorio", null);
+			FacesContext.getCurrentInstance().addMessage(null, message);
+			todosCamposValido = false;
+		}
+
+		return todosCamposValido;
+	}
+
 }

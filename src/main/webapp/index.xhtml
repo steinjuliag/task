@@ -6,86 +6,88 @@
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
 	<h:outputStylesheet library="css" name="estilo.css" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.12.0/css/all.min-jsf.css" />
+	<h:outputStylesheet library="webjars"
+		name="font-awesome/5.12.0/css/v4-shims.min-jsf.css" />
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Tasks</title>
 
 </h:head>
 <h:body>
+	<h:form id="formNovaTarefa">
+		<p:panel id="panel" header="Task">
+
+			<p:messages id="msgs" />
+			<h:panelGrid columns="3" cellpadding="5">
+
+				<h:inputHidden value="#{tarefaController.tarefa.idTarefa}"
+					id="idTarefa" />
+
+				<p:outputLabel for="titulo" value="Titulo *" />
+				<p:inputText id="titulo" value="#{tarefaController.tarefa.titulo}"
+					label="Titulo">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+				<p:message for="titulo" display="icon" />
 
 
-	<f:view id="bodyTarefa">
-		<div id="addTarefa">
-		<h1>Lista Tarefas</h1>
-			<h:form id="formNovaTarefa">
-				<p:growl id="growl" life="2000" />
-				<f:subview id="subviewNovaTarefa">
-
-					<h:inputHidden value="#{tarefaController.tarefa.idTarefa}"
-						id="idTarefa" />
-
-					<h3>Titulo</h3>
-					<span class="ui-float-label"> <p:inputText id="titulo"
-							value="#{tarefaController.tarefa.titulo}" /> <p:outputLabel
-							for="@previous" value="Titulo" />
-					</span>
-					<h3>Descrição</h3>
-					<span class="ui-float-label"> <p:inputText id="descricao"
-							value="#{tarefaController.tarefa.descricao}" /> <p:outputLabel
-							for="@previous" value="Descrição" />
-					</span>
-					<h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5">
-						<p:outputLabel for="status" value="Status:" />
-						<p:selectOneRadio id="status" value="#{tarefaController.tarefa.status}"
-							unselectable="true">
-							<f:selectItem itemLabel="Não inicializada" itemValue="NAO_INICIADO" />
-							<f:selectItem itemLabel="Em andamento" itemValue="INICIADO" />
-							<f:selectItem itemLabel="Finalizada" itemValue="FINALIZADO" />
-						</p:selectOneRadio>
-					</h:panelGrid>
-				</f:subview>
-				<br></br>
-				<br></br>
-
-				<p:commandButton value="Cadastrar" id="cadastrar"
-					update="growl formNovaTarefa tableBody"
-					action="#{tarefaController.buttonSalvar}"
-					style="margin-right:20px;" styleClass="ui-priority-primary" />
-
-			</h:form>
-
-			<br></br> <br></br>
-
-			<div id="tableTarefas">
-				<p:dataTable id="tableBody" var="tarefa"
-					value="#{tarefaController.tarefas}">
-					<p:column headerText="Ação">
-						<p:commandButton value="Excluir"
-							action="#{tarefaController.buttonExcluir(tarefa)}"
-							update="tableBody" style="margin-right:20px;"
-							styleClass="ui-priority-primary" />
-						<p:commandButton value="Atualizar"
-							action="#{tarefaController.buttonAtualizar(tarefa)}"
-							update="formNovaTarefa" style="margin-right:20px;"
-							styleClass="ui-priority-primary" />
-					</p:column>
-					<p:column headerText="status">
-						<h:outputText value="#{tarefaController.valorStatus(tarefa.status)}" />
-					</p:column>
-					
-					<p:column headerText="Titulo">
-						<h:outputText value="#{tarefa.titulo}" />
-					</p:column>
-
-					<p:column headerText="Descrição">
-						<h:outputText value="#{tarefa.descricao}" />
-					</p:column>
-				</p:dataTable>
-
-			</div>
-
-		</div>
-	</f:view>
+				<p:outputLabel for="descricao" value="Descricao *" />
+				<p:inputText id="descricao"
+					value="#{tarefaController.tarefa.descricao}" label="Descrição">
+					<f:validateLength minimum="2" />
+				</p:inputText>
+				<p:message for="descricao" display="icon" />
 
 
+				<p:outputLabel for="status" value="Status: *" />
+				<p:selectOneRadio id="status"
+					value="#{tarefaController.tarefa.status}" unselectable="true">
+					<f:selectItem itemLabel="Não inicializada" itemValue="NAO_INICIADO" />
+					<f:selectItem itemLabel="Em andamento" itemValue="INICIADO" />
+					<f:selectItem itemLabel="Finalizada" itemValue="FINALIZADO" />
+				</p:selectOneRadio>
+				<p:message for="status" display="icon" />
+
+			</h:panelGrid>
+
+			<p:commandButton value="Cadastrar" id="cadastrar"
+				update="formNovaTarefa tableBody"
+				action="#{tarefaController.buttonSalvar}" style="margin-right:20px;"
+				styleClass="ui-priority-primary" />
+
+		</p:panel>
+
+	</h:form>
+
+	<br></br>
+	<br></br>
+
+	<div id="tableTarefas">
+		<p:dataTable id="tableBody" var="tarefa"
+			value="#{tarefaController.tarefas}">
+			<p:column headerText="Ação">
+				<p:commandButton value="Excluir"
+					action="#{tarefaController.buttonExcluir(tarefa)}"
+					update="tableBody" style="margin-right:20px;"
+					styleClass="ui-priority-primary" />
+				<p:commandButton value="Editar"
+					action="#{tarefaController.buttonAtualizar(tarefa)}"
+					update="formNovaTarefa" style="margin-right:20px;"
+					styleClass="ui-priority-primary" />
+			</p:column>
+			<p:column headerText="status">
+				<h:outputText value="#{tarefaController.valorStatus(tarefa.status)}" />
+			</p:column>
+
+			<p:column headerText="Titulo">
+				<h:outputText value="#{tarefa.titulo}" />
+			</p:column>
+
+			<p:column headerText="Descrição">
+				<h:outputText value="#{tarefa.descricao}" />
+			</p:column>
+		</p:dataTable>
+	</div>
 </h:body>
 </html>
