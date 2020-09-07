@@ -3,7 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:format="http://task/LocalDateTimeConverter">
+
 <h:head>
 	<h:outputStylesheet library="css" name="estilo.css" />
 	<h:outputStylesheet library="webjars"
@@ -66,27 +68,40 @@
 	<div id="tableTarefas">
 		<p:dataTable id="tableBody" var="tarefa"
 			value="#{tarefaController.tarefas}">
-			<p:column headerText="Ação">
+
+			<p:column headerText="Ação" width="10%">
 				<p:commandButton value="Excluir"
 					action="#{tarefaController.buttonExcluir(tarefa)}"
-					update="tableBody" style="margin-right:20px;"
-					styleClass="ui-priority-primary" />
+					update="tableBody" styleClass="ui-priority-primary" />
 				<p:commandButton value="Editar"
 					action="#{tarefaController.buttonAtualizar(tarefa)}"
-					update="formNovaTarefa" style="margin-right:20px;"
-					styleClass="ui-priority-primary" />
-			</p:column>
-			<p:column headerText="status">
-				<h:outputText value="#{tarefaController.valorStatus(tarefa.status)}" />
+					update="formNovaTarefa" styleClass="ui-priority-primary" />
 			</p:column>
 
-			<p:column headerText="Titulo">
+			<p:column headerText="Data inicio" width="9%">
+				<h:outputText value="#{tarefa.dt_inicio_tf}">
+					<format:LocalDateTimeConverter pattern="dd-MMM-yyyy hh:mm:ss"></format:LocalDateTimeConverter>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Tempo gasto" width="10%">
+				
+			</p:column>
+
+			<p:column headerText="status" width="10%">
+				<h:outputText value="#{tarefaController.valorStatus(tarefa.status)}" />
+			</p:column>
+			
+			
+			<p:column headerText="Titulo" width="20%">
 				<h:outputText value="#{tarefa.titulo}" />
 			</p:column>
 
-			<p:column headerText="Descrição">
+			<p:column headerText="Descrição"
+				style="max-width: 550px; min-width: 550px">
 				<h:outputText value="#{tarefa.descricao}" />
 			</p:column>
+
 		</p:dataTable>
 	</div>
 </h:body>

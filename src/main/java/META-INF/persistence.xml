@@ -8,6 +8,8 @@
             ARQUIVO DE PERSISTÊNCIA JPA E HIBERNATE            
         </description>
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>task.model.Tarefa</class>
+        <class>task.uteis.LocalDateTimeAttributeConverter</class>
  
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

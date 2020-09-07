@@ -6,12 +6,16 @@ import javax.inject.Inject;
 
 import task.model.Tarefa;
 import task.repository.TaskRepository;
+import task.uteis.LocalDateTimeAttributeConverter;
 
 public class TarefaService {
 
 	@Inject
 	TaskRepository taskRepository;
-
+	
+    @Inject
+	LocalDateTimeAttributeConverter timeStamp;
+    
 	public void salvar(Tarefa tarefa) {
 		taskRepository.salvar(tarefa);
 	}

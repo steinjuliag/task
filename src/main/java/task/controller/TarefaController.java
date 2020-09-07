@@ -1,5 +1,9 @@
 package task.controller;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,8 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.primefaces.PrimeFaces;
-import org.primefaces.context.PrimeFacesContext;
+
 
 import task.model.Status;
 import task.model.Tarefa;
@@ -62,7 +65,11 @@ public class TarefaController {
 		if (validar()) {
 			if (this.tarefa.getIdTarefa() != null) {
 				this.tarefaService.atualizar(tarefa);
+//				if(this.tarefa.getStatus().equals(Status.FINALIZADO)) {
+//	            	this.tempoGasto(this.tarefa.getDt_inicio_tf());
+//				}
 			} else {
+				tarefa.setDt_inicio_tf(LocalDateTime.now());
 				this.tarefaService.salvar(tarefa);
 			}
 			String msg = tarefa.getTitulo() + " Salvo com sucesso!";
@@ -77,6 +84,13 @@ public class TarefaController {
 		tarefa = new Tarefa();
 	}
 
+//	public long tempoGasto(LocalDateTime date) {
+//		LocalDateTime dataInicio = date;
+//		LocalDateTime  dataFim = this.tarefa.getDt_inicio_tf();
+//		long  tempoGasto = 8;
+//		 return  tempoGasto;
+//	}
+	
 	public void buttonExcluir(Tarefa tarefa) {
 		this.tarefaService.excluir(tarefa);
 		this.tarefas = this.tarefaService.listar();
@@ -100,6 +114,7 @@ public class TarefaController {
 		} else if (status.equals(Status.FINALIZADO)) {
 			valor = "Finalizado";
 		}
+		
 		return valor;
 
 	}
